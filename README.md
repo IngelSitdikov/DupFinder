@@ -1,6 +1,6 @@
 # Duplicate Finder (DupFinder)
 
-[Русский](README.md) · **English**
+**English** · [Русский](README.ru.md)
 
 A Windows program that finds identical files — on one drive or across two drives — and helps you
 free up space: move the extra copies to the Recycle Bin or turn them into hard links.
