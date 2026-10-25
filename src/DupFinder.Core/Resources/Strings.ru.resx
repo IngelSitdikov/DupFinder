@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="RootsCount" xml:space="preserve"><value>Нужен один или два корня.</value></data>
+  <data name="FileChangedWhileReading" xml:space="preserve"><value>Файл изменился во время чтения.</value></data>
+  <data name="FileGone" xml:space="preserve"><value>файла уже нет</value></data>
+  <data name="FileChangedSinceScan" xml:space="preserve"><value>файл изменился после сканирования — пересканируйте</value></data>
+  <data name="SameFile" xml:space="preserve"><value>это один и тот же файл</value></data>
+  <data name="KeptCopyPrefix" xml:space="preserve"><value>оставляемая копия: </value></data>
+  <data name="ContentMismatch" xml:space="preserve"><value>содержимое не совпадает с оставляемой копией</value></data>
+  <data name="HardLinksWindowsOnly" xml:space="preserve"><value>жёсткие ссылки поддерживаются только в Windows</value></data>
+  <data name="HardLinkOtherVolume" xml:space="preserve"><value>оставляемая копия на другом диске — жёсткая ссылка возможна только в пределах одного тома</value></data>
+</root>

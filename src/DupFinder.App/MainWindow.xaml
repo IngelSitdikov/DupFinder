@@ -1,0 +1,184 @@
+﻿<Window x:Class="DupFinder.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:DupFinder.App.ViewModels"
+        xmlns:res="clr-namespace:DupFinder.App"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:MainViewModel}"
+        Title="{x:Static res:Strings.WindowTitle}" Height="720" Width="1100" MinWidth="760" MinHeight="480"
+        FontSize="13">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="12,4" />
+            <Setter Property="Margin" Value="0,0,6,0" />
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Выбор дисков -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="{x:Static res:Strings.DriveA}" VerticalAlignment="Center" Margin="0,0,8,6" FontWeight="SemiBold" />
+            <TextBox Grid.Column="1" Text="{Binding RootA, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="0,0,6,6" Padding="4,3" IsEnabled="{Binding IsIdle}" />
+            <Button Grid.Column="2" Content="{x:Static res:Strings.Browse}" Command="{Binding BrowseACommand}" Margin="0,0,6,6" />
+
+            <TextBlock Grid.Row="1" Text="{x:Static res:Strings.DriveB}" VerticalAlignment="Center" Margin="0,0,8,0" FontWeight="SemiBold" />
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding RootB, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="0,0,6,0" Padding="4,3" ToolTip="{x:Static res:Strings.DriveBToolTip}"
+                     IsEnabled="{Binding IsIdle}" />
+            <Button Grid.Row="1" Grid.Column="2" Content="{x:Static res:Strings.Browse}" Command="{Binding BrowseBCommand}" />
+            <Button Grid.Row="1" Grid.Column="3" Content="✕" ToolTip="{x:Static res:Strings.ClearBToolTip}" Command="{Binding ClearBCommand}"
+                    Margin="0" Padding="8,4" />
+        </Grid>
+
+        <!-- Параметры и запуск -->
+        <WrapPanel Grid.Row="1" Margin="0,10,0,0">
+            <CheckBox Content="{x:Static res:Strings.CrossOnly}" IsChecked="{Binding CrossOnly}"
+                      IsEnabled="{Binding HasRootB}" VerticalAlignment="Center" Margin="0,0,18,0" />
+            <TextBlock Text="{x:Static res:Strings.MinSizePrefix}" VerticalAlignment="Center" Margin="0,0,6,0" />
+            <TextBox Text="{Binding MinSizeKb}" Width="60" Padding="4,3" VerticalAlignment="Center" />
+            <TextBlock Text="{x:Static res:Strings.KB}" VerticalAlignment="Center" Margin="6,0,18,0" />
+            <Button Content="{x:Static res:Strings.FindDuplicates}" Command="{Binding ScanCommand}" FontWeight="SemiBold" />
+            <Button Content="{x:Static res:Strings.Stop}" Command="{Binding CancelCommand}"
+                    Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}" />
+            <CheckBox Content="{x:Static res:Strings.HashCache}" IsChecked="{Binding UseCache}" VerticalAlignment="Center" Margin="18,0,8,0"
+                      ToolTip="{x:Static res:Strings.HashCacheToolTip}" />
+            <TextBlock Text="{Binding CacheInfo}" Foreground="#666" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <Button Content="{x:Static res:Strings.Clear}" Command="{Binding ClearCacheCommand}" Margin="0" Padding="8,2" />
+            <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedLanguage}" DisplayMemberPath="Name"
+                      IsEnabled="{Binding IsIdle}" ToolTip="{x:Static res:Strings.LanguageToolTip}"
+                      VerticalAlignment="Center" Margin="18,0,0,0" MinWidth="90" />
+        </WrapPanel>
+
+        <!-- Прогресс и итог -->
+        <StackPanel Grid.Row="2" Margin="0,10,0,6">
+            <ProgressBar Height="6" Value="{Binding ProgressPercent}" IsIndeterminate="{Binding ProgressIndeterminate}"
+                         Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}" Margin="0,0,0,4" />
+            <TextBlock Text="{Binding Status}" TextTrimming="CharacterEllipsis" Foreground="#555" />
+            <TextBlock Text="{Binding Summary}" FontWeight="SemiBold" Margin="0,4,0,0" />
+        </StackPanel>
+
+        <!-- Результаты -->
+        <TabControl Grid.Row="3">
+            <TabItem Header="{x:Static res:Strings.TabDuplicates}">
+                <ListBox ItemsSource="{Binding Groups}" HorizontalContentAlignment="Stretch"
+                         VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling"
+                         VirtualizingPanel.ScrollUnit="Pixel" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Focusable" Value="False" />
+                            <Setter Property="Padding" Value="0" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type vm:GroupItem}">
+                            <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Padding="6,6">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Header}" FontWeight="SemiBold" Margin="0,0,0,4" />
+                                    <ItemsControl ItemsSource="{Binding Files}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type vm:FileItem}">
+                                                <Grid Margin="0,1" Background="Transparent"
+                                                      ToolTip="{x:Static res:Strings.ShowInExplorerToolTip}">
+                                                    <Grid.InputBindings>
+                                                        <MouseBinding Gesture="LeftDoubleClick"
+                                                                      Command="{Binding DataContext.ShowInExplorerCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                      CommandParameter="{Binding}" />
+                                                    </Grid.InputBindings>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="28" />
+                                                        <ColumnDefinition Width="140" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <CheckBox IsChecked="{Binding IsMarked}" VerticalAlignment="Center"
+                                                              ToolTip="{x:Static res:Strings.MarkToolTip}" Margin="0,0,6,0" />
+                                                    <Border Grid.Column="1" CornerRadius="3" Width="20" HorizontalAlignment="Left"
+                                                            Background="#E8EEF8">
+                                                        <TextBlock Text="{Binding RootLabel}" HorizontalAlignment="Center"
+                                                                   FontWeight="SemiBold" Foreground="#2B4C7E" />
+                                                    </Border>
+                                                    <TextBlock Grid.Column="2" Text="{Binding LastWrite, StringFormat='g'}"
+                                                               Foreground="#666" VerticalAlignment="Center" />
+                                                    <TextBlock Grid.Column="3" Text="{Binding Path}" TextTrimming="CharacterEllipsis"
+                                                               VerticalAlignment="Center">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsMarked}" Value="True">
+                                                                        <Setter Property="Foreground" Value="#B03030" />
+                                                                        <Setter Property="TextDecorations" Value="Strikethrough" />
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock>
+                        <Run Text="{x:Static res:Strings.TabErrors}" /><Run Text=" (" /><Run Text="{Binding Errors.Count, Mode=OneWay}" /><Run Text=")" />
+                    </TextBlock>
+                </TabItem.Header>
+                <ListBox ItemsSource="{Binding Errors}" VirtualizingPanel.IsVirtualizing="True" />
+            </TabItem>
+        </TabControl>
+
+        <!-- Действия: слева — отметки, справа — что сделать с отмеченными; на узком окне переносятся -->
+        <Grid Grid.Row="4" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <WrapPanel VerticalAlignment="Center">
+                <TextBlock Text="{x:Static res:Strings.MarkLabel}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                <Button Content="{x:Static res:Strings.KeepOldest}" Command="{Binding KeepOldestCommand}" Margin="0,0,6,4" />
+                <Button Content="{x:Static res:Strings.KeepOnA}" Command="{Binding KeepOnACommand}" Margin="0,0,6,4" />
+                <Button Content="{x:Static res:Strings.KeepOnB}" Command="{Binding KeepOnBCommand}" Margin="0,0,6,4" />
+                <Button Content="{x:Static res:Strings.UnmarkAll}" Command="{Binding ClearMarksCommand}" Margin="0,0,6,4" />
+            </WrapPanel>
+            <WrapPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <TextBlock Text="{Binding MarkedText}" VerticalAlignment="Center" Margin="0,0,12,4" />
+                <Button Content="{x:Static res:Strings.CsvReport}" Command="{Binding ExportCsvCommand}" Margin="0,0,6,4" />
+                <CheckBox Content="{x:Static res:Strings.VerifyBytes}" IsChecked="{Binding VerifyBeforeDelete}"
+                          VerticalAlignment="Center" Margin="6,0,12,4"
+                          ToolTip="{x:Static res:Strings.VerifyBytesToolTip}" />
+                <Button Content="{x:Static res:Strings.ReplaceWithLinks}" Command="{Binding HardLinkMarkedCommand}"
+                        ToolTip="{x:Static res:Strings.ReplaceWithLinksToolTip}" Margin="0,0,6,4" />
+                <Button Content="{x:Static res:Strings.MoveToRecycleBin}" Command="{Binding DeleteMarkedCommand}"
+                        FontWeight="SemiBold" Margin="0,0,0,4" />
+            </WrapPanel>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="ByteUnits" xml:space="preserve"><value>B|KB|MB|GB|TB</value></data>
+  <data name="FileForms" xml:space="preserve"><value>file|files</value></data>
+  <data name="CopyForms" xml:space="preserve"><value>copy|copies</value></data>
+  <data name="GroupForms" xml:space="preserve"><value>duplicate group|duplicate groups</value></data>
+  <data name="GroupInForms" xml:space="preserve"><value>group|groups</value></data>
+  <data name="WindowTitle" xml:space="preserve"><value>Duplicate Finder</value></data>
+  <data name="DriveA" xml:space="preserve"><value>Drive A:</value></data>
+  <data name="DriveB" xml:space="preserve"><value>Drive B:</value></data>
+  <data name="Browse" xml:space="preserve"><value>Browse…</value></data>
+  <data name="DriveBToolTip" xml:space="preserve"><value>Optional. Without drive B, duplicates are searched within drive A.</value></data>
+  <data name="ClearBToolTip" xml:space="preserve"><value>Remove drive B</value></data>
+  <data name="CrossOnly" xml:space="preserve"><value>Only files present on both A and B</value></data>
+  <data name="MinSizePrefix" xml:space="preserve"><value>At least</value></data>
+  <data name="KB" xml:space="preserve"><value>KB</value></data>
+  <data name="FindDuplicates" xml:space="preserve"><value>Find duplicates</value></data>
+  <data name="Stop" xml:space="preserve"><value>Stop</value></data>
+  <data name="HashCache" xml:space="preserve"><value>Hash cache</value></data>
+  <data name="HashCacheToolTip" xml:space="preserve"><value>Remember file hashes between runs: rescanning the same drive is many times faster</value></data>
+  <data name="Clear" xml:space="preserve"><value>Clear</value></data>
+  <data name="LanguageToolTip" xml:space="preserve"><value>Interface language</value></data>
+  <data name="TabDuplicates" xml:space="preserve"><value>Duplicates</value></data>
+  <data name="TabErrors" xml:space="preserve"><value>Errors</value></data>
+  <data name="ShowInExplorerToolTip" xml:space="preserve"><value>Double-click to show in Explorer</value></data>
+  <data name="MarkToolTip" xml:space="preserve"><value>Mark for removal</value></data>
+  <data name="MarkLabel" xml:space="preserve"><value>Mark:</value></data>
+  <data name="KeepOldest" xml:space="preserve"><value>Keep the oldest</value></data>
+  <data name="KeepOnA" xml:space="preserve"><value>Keep on A</value></data>
+  <data name="KeepOnB" xml:space="preserve"><value>Keep on B</value></data>
+  <data name="UnmarkAll" xml:space="preserve"><value>Unmark all</value></data>
+  <data name="MoveToRecycleBin" xml:space="preserve"><value>Move to Recycle Bin</value></data>
+  <data name="ReplaceWithLinks" xml:space="preserve"><value>Replace with hard links</value></data>
+  <data name="ReplaceWithLinksToolTip" xml:space="preserve"><value>Marked files stay where they are but become hard links to the kept copy and stop taking up space. NTFS only, and only within one drive.</value></data>
+  <data name="VerifyBytes" xml:space="preserve"><value>Verify byte by byte</value></data>
+  <data name="VerifyBytesToolTip" xml:space="preserve"><value>Before deleting, compare the file with the kept copy byte for byte. Slower, but doesn't rely on the hash (including a cached one). Replacing with hard links always verifies.</value></data>
+  <data name="CsvReport" xml:space="preserve"><value>CSV report…</value></data>
+  <data name="StatusInitial" xml:space="preserve"><value>Choose drive A. If you also set drive B, the program looks for files present on both.</value></data>
+  <data name="NothingMarked" xml:space="preserve"><value>Nothing marked</value></data>
+  <data name="Marked" xml:space="preserve"><value>Marked {0}, {1}</value></data>
+  <data name="GroupHeader" xml:space="preserve"><value>{0} · {1} each · {2} wasted</value></data>
+  <data name="PickFolderTitle" xml:space="preserve"><value>Choose a drive or folder</value></data>
+  <data name="CacheUnavailable" xml:space="preserve"><value>Hash cache is unavailable, scanning without it: {0}</value></data>
+  <data name="CacheInfo" xml:space="preserve"><value>Cache: {0}</value></data>
+  <data name="CacheInfoWithCount" xml:space="preserve"><value>Cache: {0}, {1}</value></data>
+  <data name="CacheEmpty" xml:space="preserve"><value>Cache is empty</value></data>
+  <data name="CacheCleared" xml:space="preserve"><value>Hash cache cleared — the next scan will read everything again.</value></data>
+  <data name="NoSuchFolder" xml:space="preserve"><value>No such folder: {0}</value></data>
+  <data name="ScanDone" xml:space="preserve"><value>Done in {0}. Scanned {1}.</value></data>
+  <data name="ScanDoneWithErrors" xml:space="preserve"><value>Done in {0}. Scanned {1}, could not read {2:N0}.</value></data>
+  <data name="ScanStopped" xml:space="preserve"><value>Scan stopped.</value></data>
+  <data name="ProgressEnumerating" xml:space="preserve"><value>Listing files: found {0}… {1}</value></data>
+  <data name="ProgressPartial" xml:space="preserve"><value>Quick check {0:N0} of {1:N0}… {2}</value></data>
+  <data name="ProgressFull" xml:space="preserve"><value>Comparing content {0:N0} of {1:N0}, {2} of {3}… {4}</value></data>
+  <data name="NoDuplicates" xml:space="preserve"><value>No duplicates found.</value></data>
+  <data name="Summary" xml:space="preserve"><value>{0}, {1} can be freed</value></data>
+  <data name="DialogTitle" xml:space="preserve"><value>Duplicates</value></data>
+  <data name="AllMarked" xml:space="preserve"><value>In {0} every copy is marked — the file would be lost entirely. Unmark at least one copy.
+
+For example:
+{1}</value></data>
+  <data name="ProgressLinking" xml:space="preserve"><value>Replacing with links {0:N0} of {1:N0}… {2}</value></data>
+  <data name="ProgressDeleting" xml:space="preserve"><value>Deleting {0:N0} of {1:N0}… {2}</value></data>
+  <data name="Stopped" xml:space="preserve"><value>Stopped.</value></data>
+  <data name="NoPairError" xml:space="preserve"><value>{0}: no unmarked copy on the same drive — nothing to link to</value></data>
+  <data name="DoneLinked" xml:space="preserve"><value>Replaced with links: {0:N0}</value></data>
+  <data name="DoneDeleted" xml:space="preserve"><value>Moved to Recycle Bin: {0:N0}</value></data>
+  <data name="DoneFailedTail" xml:space="preserve"><value>, failed: {0:N0} — see the Errors tab for reasons.</value></data>
+  <data name="NotProcessedTail" xml:space="preserve"><value> Not processed after stopping: {0:N0}.</value></data>
+  <data name="NoSameVolumeCopies" xml:space="preserve"><value>A hard link can only point to a copy on the same drive, and there are no such unmarked copies.</value></data>
+  <data name="NothingToProcess" xml:space="preserve"><value>Nothing to process.</value></data>
+  <data name="ConfirmLinks" xml:space="preserve"><value>Replace {0} with hard links to the kept copies?
+
+The files stay where they are but take up space only once. Important: after this, changing any of them changes the others too — it is the same file. The content is verified byte by byte before replacing.</value></data>
+  <data name="ConfirmDelete" xml:space="preserve"><value>Move {0} to the Recycle Bin?</value></data>
+  <data name="ConfirmDeleteVerify" xml:space="preserve"><value>
+
+Each file is compared byte by byte with the kept copy before deletion.</value></data>
+  <data name="ConfirmRemovable" xml:space="preserve"><value>
+
+{0:N0} of them are on a removable drive — there is no Recycle Bin there, they will be deleted permanently.</value></data>
+  <data name="ConfirmSkipped" xml:space="preserve"><value>
+
+{0:N0} marked files are skipped: there is no unmarked copy on the same drive.</value></data>
+  <data name="SaveReportTitle" xml:space="preserve"><value>Save report</value></data>
+  <data name="ReportFileName" xml:space="preserve"><value>duplicates-{0:yyyy-MM-dd-HHmm}.csv</value></data>
+  <data name="CsvFilter" xml:space="preserve"><value>CSV (*.csv)|*.csv</value></data>
+  <data name="CsvHeader" xml:space="preserve"><value>Group|Drive|Size|Modified|Path</value></data>
+  <data name="ReportSaved" xml:space="preserve"><value>Report saved: {0}</value></data>
+  <data name="RestartForLanguage" xml:space="preserve"><value>The interface language will change after a restart. Restart now?</value></data>
+</root>

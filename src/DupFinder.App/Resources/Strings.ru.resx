@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="ByteUnits" xml:space="preserve"><value>Б|КБ|МБ|ГБ|ТБ</value></data>
+  <data name="FileForms" xml:space="preserve"><value>файл|файла|файлов</value></data>
+  <data name="CopyForms" xml:space="preserve"><value>копия|копии|копий</value></data>
+  <data name="GroupForms" xml:space="preserve"><value>группа дубликатов|группы дубликатов|групп дубликатов</value></data>
+  <data name="GroupInForms" xml:space="preserve"><value>группе|группах|группах</value></data>
+  <data name="WindowTitle" xml:space="preserve"><value>Поиск дубликатов</value></data>
+  <data name="DriveA" xml:space="preserve"><value>Диск A:</value></data>
+  <data name="DriveB" xml:space="preserve"><value>Диск B:</value></data>
+  <data name="Browse" xml:space="preserve"><value>Обзор…</value></data>
+  <data name="DriveBToolTip" xml:space="preserve"><value>Необязательно. Без диска B ищутся дубли внутри диска A.</value></data>
+  <data name="ClearBToolTip" xml:space="preserve"><value>Убрать диск B</value></data>
+  <data name="CrossOnly" xml:space="preserve"><value>Только файлы, которые есть и на A, и на B</value></data>
+  <data name="MinSizePrefix" xml:space="preserve"><value>Не меньше</value></data>
+  <data name="KB" xml:space="preserve"><value>КБ</value></data>
+  <data name="FindDuplicates" xml:space="preserve"><value>Найти дубликаты</value></data>
+  <data name="Stop" xml:space="preserve"><value>Стоп</value></data>
+  <data name="HashCache" xml:space="preserve"><value>Кэш хешей</value></data>
+  <data name="HashCacheToolTip" xml:space="preserve"><value>Помнить хеши файлов между запусками: повторное сканирование того же диска — в разы быстрее</value></data>
+  <data name="Clear" xml:space="preserve"><value>Очистить</value></data>
+  <data name="LanguageToolTip" xml:space="preserve"><value>Язык интерфейса</value></data>
+  <data name="TabDuplicates" xml:space="preserve"><value>Дубликаты</value></data>
+  <data name="TabErrors" xml:space="preserve"><value>Ошибки</value></data>
+  <data name="ShowInExplorerToolTip" xml:space="preserve"><value>Двойной щелчок — показать в проводнике</value></data>
+  <data name="MarkToolTip" xml:space="preserve"><value>Отметить к удалению</value></data>
+  <data name="MarkLabel" xml:space="preserve"><value>Отметить:</value></data>
+  <data name="KeepOldest" xml:space="preserve"><value>Оставить самый старый</value></data>
+  <data name="KeepOnA" xml:space="preserve"><value>Оставить на A</value></data>
+  <data name="KeepOnB" xml:space="preserve"><value>Оставить на B</value></data>
+  <data name="UnmarkAll" xml:space="preserve"><value>Снять все</value></data>
+  <data name="MoveToRecycleBin" xml:space="preserve"><value>Удалить в корзину</value></data>
+  <data name="ReplaceWithLinks" xml:space="preserve"><value>Заменить ссылками</value></data>
+  <data name="ReplaceWithLinksToolTip" xml:space="preserve"><value>Отмеченные файлы останутся на месте, но станут жёсткими ссылками на оставляемую копию и перестанут занимать место. Только NTFS и только в пределах одного диска.</value></data>
+  <data name="VerifyBytes" xml:space="preserve"><value>Сверять побайтно</value></data>
+  <data name="VerifyBytesToolTip" xml:space="preserve"><value>Перед удалением сравнить файл с оставляемой копией байт в байт. Медленнее, зато не полагается на хеш (в том числе из кэша). Для замены ссылками сверка выполняется всегда.</value></data>
+  <data name="CsvReport" xml:space="preserve"><value>Отчёт CSV…</value></data>
+  <data name="StatusInitial" xml:space="preserve"><value>Выберите диск A. Если указать и диск B — будут искаться файлы, которые есть на обоих.</value></data>
+  <data name="NothingMarked" xml:space="preserve"><value>Ничего не отмечено</value></data>
+  <data name="Marked" xml:space="preserve"><value>Отмечено {0} на {1}</value></data>
+  <data name="GroupHeader" xml:space="preserve"><value>{0} · {1} каждая · лишнего {2}</value></data>
+  <data name="PickFolderTitle" xml:space="preserve"><value>Выберите диск или папку</value></data>
+  <data name="CacheUnavailable" xml:space="preserve"><value>Кэш хешей недоступен, считаю без него: {0}</value></data>
+  <data name="CacheInfo" xml:space="preserve"><value>Кэш: {0}</value></data>
+  <data name="CacheInfoWithCount" xml:space="preserve"><value>Кэш: {0}, {1}</value></data>
+  <data name="CacheEmpty" xml:space="preserve"><value>Кэш пуст</value></data>
+  <data name="CacheCleared" xml:space="preserve"><value>Кэш хешей очищен — следующее сканирование прочитает всё заново.</value></data>
+  <data name="NoSuchFolder" xml:space="preserve"><value>Нет такого каталога: {0}</value></data>
+  <data name="ScanDone" xml:space="preserve"><value>Готово за {0}. Просмотрено {1}.</value></data>
+  <data name="ScanDoneWithErrors" xml:space="preserve"><value>Готово за {0}. Просмотрено {1}, не удалось прочитать {2:N0}.</value></data>
+  <data name="ScanStopped" xml:space="preserve"><value>Сканирование остановлено.</value></data>
+  <data name="ProgressEnumerating" xml:space="preserve"><value>Обход: найдено {0}… {1}</value></data>
+  <data name="ProgressPartial" xml:space="preserve"><value>Быстрая проверка {0:N0} из {1:N0}… {2}</value></data>
+  <data name="ProgressFull" xml:space="preserve"><value>Сверка содержимого {0:N0} из {1:N0}, {2} из {3}… {4}</value></data>
+  <data name="NoDuplicates" xml:space="preserve"><value>Дубликатов не найдено.</value></data>
+  <data name="Summary" xml:space="preserve"><value>{0}, можно освободить {1}</value></data>
+  <data name="DialogTitle" xml:space="preserve"><value>Дубликаты</value></data>
+  <data name="AllMarked" xml:space="preserve"><value>В {0} отмечены все копии — так файл пропадёт совсем. Снимите отметку хотя бы с одной копии.
+
+Например:
+{1}</value></data>
+  <data name="ProgressLinking" xml:space="preserve"><value>Замена ссылками {0:N0} из {1:N0}… {2}</value></data>
+  <data name="ProgressDeleting" xml:space="preserve"><value>Удаление {0:N0} из {1:N0}… {2}</value></data>
+  <data name="Stopped" xml:space="preserve"><value>Остановлено.</value></data>
+  <data name="NoPairError" xml:space="preserve"><value>{0}: нет неотмеченной копии на том же диске — жёсткую ссылку сделать не на что</value></data>
+  <data name="DoneLinked" xml:space="preserve"><value>Заменено ссылками: {0:N0}</value></data>
+  <data name="DoneDeleted" xml:space="preserve"><value>Удалено в корзину: {0:N0}</value></data>
+  <data name="DoneFailedTail" xml:space="preserve"><value>, не удалось {0:N0} — причины на вкладке «Ошибки».</value></data>
+  <data name="NotProcessedTail" xml:space="preserve"><value> Не обработано после остановки: {0:N0}.</value></data>
+  <data name="NoSameVolumeCopies" xml:space="preserve"><value>Жёсткую ссылку можно сделать только на копию на том же диске, а таких неотмеченных копий нет.</value></data>
+  <data name="NothingToProcess" xml:space="preserve"><value>Нечего обрабатывать.</value></data>
+  <data name="ConfirmLinks" xml:space="preserve"><value>Заменить {0} жёсткими ссылками на оставляемые копии?
+
+Файлы останутся на своих местах, но будут занимать место один раз. Важно: после этого изменение любого из них меняет и остальные — это один и тот же файл. Перед заменой содержимое сверяется побайтно.</value></data>
+  <data name="ConfirmDelete" xml:space="preserve"><value>Отправить в корзину {0}?</value></data>
+  <data name="ConfirmDeleteVerify" xml:space="preserve"><value>
+
+Перед удалением каждый файл сверяется побайтно с оставляемой копией.</value></data>
+  <data name="ConfirmRemovable" xml:space="preserve"><value>
+
+{0:N0} из них на съёмном носителе — там корзины нет, они будут удалены безвозвратно.</value></data>
+  <data name="ConfirmSkipped" xml:space="preserve"><value>
+
+{0:N0} отмеченных пропущены: рядом на том же диске нет неотмеченной копии.</value></data>
+  <data name="SaveReportTitle" xml:space="preserve"><value>Сохранить отчёт</value></data>
+  <data name="ReportFileName" xml:space="preserve"><value>дубликаты-{0:yyyy-MM-dd-HHmm}.csv</value></data>
+  <data name="CsvFilter" xml:space="preserve"><value>CSV (*.csv)|*.csv</value></data>
+  <data name="CsvHeader" xml:space="preserve"><value>Группа|Диск|Размер|Изменён|Путь</value></data>
+  <data name="ReportSaved" xml:space="preserve"><value>Отчёт сохранён: {0}</value></data>
+  <data name="RestartForLanguage" xml:space="preserve"><value>Язык интерфейса сменится после перезапуска. Перезапустить сейчас?</value></data>
+</root>

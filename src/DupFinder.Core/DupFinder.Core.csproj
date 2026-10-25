@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.13" />
+    <PackageReference Include="System.IO.Hashing" Version="10.0.13" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <!-- Нейтральные ресурсы — английские; русский перевод в Resources/*.ru.resx. -->
+    <NeutralLanguage>en</NeutralLanguage>
+    <SatelliteResourceLanguages>ru</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Класс доступа к строкам перегенерируется при сборке, когда меняется Strings.resx, и лежит рядом
+         с ним в репозитории: разметку WPF компилирует во временном проекте, куда попадают только файлы,
+         существующие до сборки. -->
+    <EmbeddedResource Update="Resources\Strings.resx">
+      <StronglyTypedFileName>Resources\Strings.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>DupFinder.Core.Resources</StronglyTypedNamespace>
+      <StronglyTypedClassName>Strings</StronglyTypedClassName>
+      <PublicClass>false</PublicClass>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <!-- Strings.Designer.cs уже в Compile по шаблону **/*.cs, а генератор ресурсов добавляет его второй раз
+       (CS2002). Оставляем одну запись. -->
+  <Target Name="DedupeStringsDesigner" AfterTargets="CoreResGen">
+    <ItemGroup>
+      <Compile Remove="Resources\Strings.Designer.cs" />
+      <Compile Include="Resources\Strings.Designer.cs" />
+    </ItemGroup>
+  </Target>
+
+</Project>
