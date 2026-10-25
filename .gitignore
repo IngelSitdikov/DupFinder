@@ -481,11 +481,12 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 
-# Готовая сборка (dotnet publish -p:PublishProfile=SingleFile)
+# Single-file build output (dotnet publish -p:PublishProfile=SingleFile)
 publish/
 
-# Профиль сборки в один exe — без секретов, нужен для команды из README.
+# Single-file publish profile: no secrets, needed for the build command in README.
 !src/DupFinder.App/Properties/PublishProfiles/SingleFile.pubxml
 
-# Инструкции для Claude Code — только локально, в публичный репозиторий не идут.
+# Local-only files
 CLAUDE.md
+docs/

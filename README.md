@@ -93,5 +93,3 @@ dotnet publish src/DupFinder.App -p:PublishProfile=SingleFile # single exe → p
 | `src/DupFinder.Core` | search, hashing, cache, verification and hard links — no UI |
 | `src/DupFinder.App` | WPF window (MVVM, CommunityToolkit.Mvvm) |
 | `tests/DupFinder.Tests` | xUnit tests on temporary directories |
-
-The original task description (in Russian) is in `docs/Описание.txt`.
