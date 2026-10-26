@@ -627,6 +627,15 @@ namespace DupFinder.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Results of the search from {0:g}. Files may have changed since then: each one is checked against the disk before any action. To refresh, search again..
+        /// </summary>
+        public static string RestoredScan {
+            get {
+                return ResourceManager.GetString("RestoredScan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save report.
         /// </summary>
         public static string SaveReportTitle {
@@ -668,6 +677,15 @@ namespace DupFinder.App {
         public static string ShowInExplorerToolTip {
             get {
                 return ResourceManager.GetString("ShowInExplorerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not save the results for the next launch: {0}.
+        /// </summary>
+        public static string SnapshotSaveFailed {
+            get {
+                return ResourceManager.GetString("SnapshotSaveFailed", resourceCulture);
             }
         }
         

@@ -92,4 +92,6 @@
   <data name="CsvHeader" xml:space="preserve"><value>Группа|Диск|Размер|Изменён|Путь</value></data>
   <data name="ReportSaved" xml:space="preserve"><value>Отчёт сохранён: {0}</value></data>
   <data name="RestartForLanguage" xml:space="preserve"><value>Язык интерфейса сменится после перезапуска. Перезапустить сейчас?</value></data>
+  <data name="RestoredScan" xml:space="preserve"><value>Результаты поиска от {0:g}. С тех пор файлы могли измениться: перед любым действием каждый сверяется с диском. Чтобы обновить — найдите заново.</value></data>
+  <data name="SnapshotSaveFailed" xml:space="preserve"><value>Не удалось сохранить результаты до следующего запуска: {0}</value></data>
 </root>

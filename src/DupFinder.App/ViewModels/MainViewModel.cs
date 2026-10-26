@@ -68,9 +68,18 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
     private int _markedCount;
     private bool _bulkMarking;
 
+    /// <summary>Корни, по которым получен показанный список (поля A/B могли с тех пор поменять).</summary>
+    private IReadOnlyList<string> _resultRoots = [];
+
     public MainViewModel()
     {
         _selectedLanguage = Languages.First(l => l.Code == UiLanguage.Current);
+        var settings = AppSettings.Load();
+        RootA = settings.RootA ?? "";
+        RootB = settings.RootB ?? "";
+        CrossOnly = settings.CrossOnly ?? CrossOnly;
+        MinSizeKb = settings.MinSizeKb ?? MinSizeKb;
+        RestoreLastScan();
         UpdateCacheInfo();
     }
 
@@ -85,7 +94,7 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
     /// </summary>
     partial void OnSelectedLanguageChanged(LanguageOption value)
     {
-        new AppSettings { Language = value.Code }.Save();
+        AppSettings.Update(s => s.Language = value.Code);
         if (value.Code == UiLanguage.Current)
             return;
         var question = Strings.ResourceManager.GetString(nameof(Strings.RestartForLanguage),
@@ -180,6 +189,14 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
             return;
         }
 
+        AppSettings.Update(s =>
+        {
+            s.RootA = RootA.Trim();
+            s.RootB = HasRootB ? RootB.Trim() : null;
+            s.CrossOnly = CrossOnly;
+            s.MinSizeKb = MinSizeKb;
+        });
+
         Groups.Clear();
         Errors.Clear();
         RecalcMarks();
@@ -207,8 +224,45 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
                 ? string.Format(Strings.ScanDoneWithErrors, elapsed, scanned, result.Errors.Count)
                 : string.Format(Strings.ScanDone, elapsed, scanned);
             UpdateSummary();
+            _resultRoots = roots;
+            SaveLastScan();
         }, Strings.ScanStopped);
         UpdateCacheInfo();
+    }
+
+    /// <summary>Показать результат прошлого поиска. Файлы с тех пор могли измениться — это видно из статуса.</summary>
+    private void RestoreLastScan()
+    {
+        var snapshot = ScanSnapshot.Load();
+        if (snapshot is null)
+            return;
+        _resultRoots = snapshot.Roots;
+        RootA = snapshot.Roots[0];
+        RootB = snapshot.Roots.Count > 1 ? snapshot.Roots[1] : "";
+        foreach (var g in snapshot.Groups.Where(g => g.Files is { Count: >= 2 }))
+            Groups.Add(new GroupItem(g, RecalcMarks));
+        UpdateSummary();
+        Status = string.Format(Strings.RestoredScan, snapshot.SavedUtc.ToLocalTime());
+    }
+
+    /// <summary>Сохранить показанный список: после поиска и после каждой обработки отмеченных.</summary>
+    private void SaveLastScan()
+    {
+        if (_resultRoots.Count == 0)
+            return;
+        try
+        {
+            new ScanSnapshot
+            {
+                Roots = _resultRoots,
+                SavedUtc = DateTime.UtcNow,
+                Groups = Groups.Select(g => g.ToGroup()).ToList(),
+            }.Save();
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            Errors.Add(string.Format(Strings.SnapshotSaveFailed, ex.Message));
+        }
     }
 
     [RelayCommand]
@@ -400,6 +454,7 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
             Groups.Remove(g);
         RecalcMarks();
         UpdateSummary();
+        SaveLastScan();
 
         var ok = results.Count(r => r.Error is null);
         var failed = results.Count - ok + noPair.Count;

@@ -92,4 +92,6 @@ Each file is compared byte by byte with the kept copy before deletion.</value></
   <data name="CsvHeader" xml:space="preserve"><value>Group|Drive|Size|Modified|Path</value></data>
   <data name="ReportSaved" xml:space="preserve"><value>Report saved: {0}</value></data>
   <data name="RestartForLanguage" xml:space="preserve"><value>The interface language will change after a restart. Restart now?</value></data>
+  <data name="RestoredScan" xml:space="preserve"><value>Results of the search from {0:g}. Files may have changed since then: each one is checked against the disk before any action. To refresh, search again.</value></data>
+  <data name="SnapshotSaveFailed" xml:space="preserve"><value>Could not save the results for the next launch: {0}</value></data>
 </root>

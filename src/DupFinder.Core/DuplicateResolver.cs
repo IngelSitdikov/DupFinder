@@ -50,12 +50,22 @@ public static partial class DuplicateResolver
     /// </summary>
     public static string? VerifyDuplicate(FileEntry target, FileEntry keep, CancellationToken ct = default)
     {
-        if (string.Equals(target.Path, keep.Path, StringComparison.OrdinalIgnoreCase))
-            return Strings.SameFile;
-        var reason = CheckUnchanged(target) ?? CheckUnchanged(keep)?.Insert(0, Strings.KeptCopyPrefix);
+        var reason = CheckBothUnchanged(target, keep);
         if (reason is not null)
             return reason;
         return AreIdentical(target.Path, keep.Path, ct) ? null : Strings.ContentMismatch;
+    }
+
+    /// <summary>
+    /// Та же проверка без побайтной сверки: оба файла на месте и не менялись. Оставляемую копию
+    /// проверяем обязательно — список мог устареть (восстановлен после перезапуска), и без этого
+    /// можно удалить последнюю копию, если оставляемую уже убрали где-то ещё.
+    /// </summary>
+    public static string? CheckBothUnchanged(FileEntry target, FileEntry keep)
+    {
+        if (string.Equals(target.Path, keep.Path, StringComparison.OrdinalIgnoreCase))
+            return Strings.SameFile;
+        return CheckUnchanged(target) ?? CheckUnchanged(keep)?.Insert(0, Strings.KeptCopyPrefix);
     }
 
     public static bool SameVolume(string a, string b) =>

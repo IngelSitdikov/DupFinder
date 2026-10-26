@@ -28,6 +28,7 @@ public sealed class GroupItem : ObservableObject
     {
         _marksChanged = marksChanged;
         Size = group.Size;
+        Hash = group.Hash;
         Files = new ObservableCollection<FileItem>(group.Files.Select(f => new FileItem(f, this)));
         Files.CollectionChanged += (_, _) =>
         {
@@ -37,7 +38,11 @@ public sealed class GroupItem : ObservableObject
     }
 
     public long Size { get; }
+    public string Hash { get; }
     public ObservableCollection<FileItem> Files { get; }
+
+    /// <summary>Группа в нынешнем виде — без уже удалённых и заменённых ссылками копий.</summary>
+    public DuplicateGroup ToGroup() => new(Size, Hash, Files.Select(f => f.Entry).ToList());
 
     public long WastedBytes => Size * Math.Max(0, Files.Count - 1);
 

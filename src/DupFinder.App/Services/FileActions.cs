@@ -8,8 +8,8 @@ namespace DupFinder.App.Services;
 public static class FileActions
 {
     /// <summary>
-    /// Отправляет файл в корзину. Перед этим проверяет, что он не изменился с момента сканирования,
-    /// а при <paramref name="verify"/> — ещё и что побайтно совпадает с оставляемой копией.
+    /// Отправляет файл в корзину. Перед этим проверяет, что он и оставляемая копия не изменились
+    /// с момента сканирования, а при <paramref name="verify"/> — ещё и что они совпадают побайтно.
     /// Возвращает текст ошибки или null при успехе.
     /// </summary>
     public static string? MoveToRecycleBin(FileEntry target, FileEntry keep, bool verify, CancellationToken ct)
@@ -18,7 +18,7 @@ public static class FileActions
         {
             var reason = verify
                 ? DuplicateResolver.VerifyDuplicate(target, keep, ct)
-                : DuplicateResolver.CheckUnchanged(target);
+                : DuplicateResolver.CheckBothUnchanged(target, keep);
             if (reason is not null)
                 return reason;
 

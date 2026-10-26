@@ -118,6 +118,19 @@ public sealed class CacheAndResolverTests : IDisposable
     }
 
     [Fact]
+    public void CheckBoth_RefusesWhenKeptCopyIsGone()
+    {
+        // Устаревший список: оставляемую копию уже удалили где-то ещё — удалять «дубль» нельзя.
+        var a = Write("a.bin", Bytes(1000, 1));
+        var b = Write("b.bin", File.ReadAllBytes(a));
+        var keep = Entry(b);
+        Assert.Null(DuplicateResolver.CheckBothUnchanged(Entry(a), keep));
+
+        File.Delete(b);
+        Assert.NotNull(DuplicateResolver.CheckBothUnchanged(Entry(a), keep));
+    }
+
+    [Fact]
     public void ReplaceWithHardLink_FreesSpaceAndKeepsContent()
     {
         if (!OperatingSystem.IsWindows())
