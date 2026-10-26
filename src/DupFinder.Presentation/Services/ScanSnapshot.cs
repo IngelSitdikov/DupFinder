@@ -2,10 +2,10 @@ using System.IO;
 using System.Text.Json;
 using DupFinder.Core;
 
-namespace DupFinder.App.Services;
+namespace DupFinder.Presentation.Services;
 
 /// <summary>
-/// Последний результат поиска в %LOCALAPPDATA%\DupFinder\lastscan.json — чтобы после перезапуска
+/// Последний результат поиска в lastscan.json в <see cref="AppSettings.DataFolder"/> — чтобы после перезапуска
 /// не искать заново. Список может устареть, но это безопасно: перед любым действием файлы
 /// сверяются с диском (<see cref="DuplicateResolver.CheckBothUnchanged"/>).
 /// </summary>

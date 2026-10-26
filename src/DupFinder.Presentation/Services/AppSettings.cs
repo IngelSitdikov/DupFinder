@@ -1,16 +1,19 @@
 using System.IO;
 using System.Text.Json;
 
-namespace DupFinder.App.Services;
+namespace DupFinder.Presentation.Services;
 
-/// <summary>Настройки пользователя в %LOCALAPPDATA%\DupFinder\settings.json, рядом с кэшем хешей.</summary>
+/// <summary>
+/// Настройки пользователя в settings.json рядом с кэшем хешей: %LOCALAPPDATA%\DupFinder в Windows,
+/// ~/Library/Application Support/DupFinder в macOS.
+/// </summary>
 public sealed class AppSettings
 {
     /// <summary>Каталог данных программы: настройки, кэш хешей, последний результат поиска.</summary>
     public static string DataFolder => Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DupFinder");
 
-    /// <summary>Язык интерфейса ("en", "ru"); null — как у Windows.</summary>
+    /// <summary>Язык интерфейса ("en", "ru"); null — как у системы.</summary>
     public string? Language { get; set; }
 
     /// <summary>Параметры последнего запущенного поиска.</summary>

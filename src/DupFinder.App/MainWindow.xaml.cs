@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel;
 using System.Windows;
-using DupFinder.App.ViewModels;
+using DupFinder.Presentation.ViewModels;
 
 namespace DupFinder.App;
 
 public partial class MainWindow : Window
 {
-    private readonly MainViewModel _vm = new();
+    private readonly MainViewModel _vm = new(new WpfDialogs());
 
     public MainWindow()
     {

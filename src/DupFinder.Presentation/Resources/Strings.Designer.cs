@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DupFinder.App {
+namespace DupFinder.Presentation {
     using System;
     
     
@@ -36,7 +36,7 @@ namespace DupFinder.App {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DupFinder.App.Resources.Strings", typeof(Strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DupFinder.Presentation.Resources.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -75,6 +75,33 @@ namespace DupFinder.App {
         public static string Browse {
             get {
                 return ResourceManager.GetString("Browse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string ButtonCancel {
+            get {
+                return ResourceManager.GetString("ButtonCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string ButtonNo {
+            get {
+                return ResourceManager.GetString("ButtonNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string ButtonYes {
+            get {
+                return ResourceManager.GetString("ButtonYes", resourceCulture);
             }
         }
         
@@ -204,6 +231,15 @@ namespace DupFinder.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Move {0} to the Trash?.
+        /// </summary>
+        public static string ConfirmTrash {
+            get {
+                return ResourceManager.GetString("ConfirmTrash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to copy|copies.
         /// </summary>
         public static string CopyForms {
@@ -281,6 +317,15 @@ namespace DupFinder.App {
         public static string DoneLinked {
             get {
                 return ResourceManager.GetString("DoneLinked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Moved to Trash: {0:N0}.
+        /// </summary>
+        public static string DoneTrashed {
+            get {
+                return ResourceManager.GetString("DoneTrashed", resourceCulture);
             }
         }
         
@@ -465,6 +510,15 @@ namespace DupFinder.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Move to Trash.
+        /// </summary>
+        public static string MoveToTrash {
+            get {
+                return ResourceManager.GetString("MoveToTrash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No duplicates found..
         /// </summary>
         public static string NoDuplicates {
@@ -600,6 +654,15 @@ namespace DupFinder.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Marked files stay where they are but become hard links to the kept copy and stop taking up space. Only within one volume..
+        /// </summary>
+        public static string ReplaceWithLinksToolTipMac {
+            get {
+                return ResourceManager.GetString("ReplaceWithLinksToolTipMac", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to duplicates-{0:yyyy-MM-dd-HHmm}.csv.
         /// </summary>
         public static string ReportFileName {
@@ -681,6 +744,15 @@ namespace DupFinder.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Double-click to show in Finder.
+        /// </summary>
+        public static string ShowInFinderToolTip {
+            get {
+                return ResourceManager.GetString("ShowInFinderToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not save the results for the next launch: {0}.
         /// </summary>
         public static string SnapshotSaveFailed {
@@ -740,6 +812,15 @@ namespace DupFinder.App {
         public static string TabErrors {
             get {
                 return ResourceManager.GetString("TabErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to the Trash is not available on this system.
+        /// </summary>
+        public static string TrashUnsupported {
+            get {
+                return ResourceManager.GetString("TrashUnsupported", resourceCulture);
             }
         }
         

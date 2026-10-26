@@ -11,6 +11,5 @@
   <data name="SameFile" xml:space="preserve"><value>it is the same file</value></data>
   <data name="KeptCopyPrefix" xml:space="preserve"><value>kept copy: </value></data>
   <data name="ContentMismatch" xml:space="preserve"><value>the content differs from the kept copy</value></data>
-  <data name="HardLinksWindowsOnly" xml:space="preserve"><value>hard links are supported only on Windows</value></data>
   <data name="HardLinkOtherVolume" xml:space="preserve"><value>the kept copy is on another drive — a hard link is only possible within one volume</value></data>
 </root>

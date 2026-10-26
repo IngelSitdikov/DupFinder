@@ -30,6 +30,8 @@ public sealed class ScanOptions
         new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             "System Volume Information", "$Recycle.Bin", "$RECYCLE.BIN", "RECYCLER", "$WinREAgent",
+            // macOS: корзины томов, индекс Spotlight, журнал событий ФС, версии документов.
+            ".Trash", ".Trashes", ".Spotlight-V100", ".fseventsd", ".DocumentRevisions-V100", ".TemporaryItems",
         };
 }
 

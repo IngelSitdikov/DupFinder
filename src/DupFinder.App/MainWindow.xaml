@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:DupFinder.App.ViewModels"
-        xmlns:res="clr-namespace:DupFinder.App"
+        xmlns:vm="clr-namespace:DupFinder.Presentation.ViewModels;assembly=DupFinder.Presentation"
+        xmlns:res="clr-namespace:DupFinder.Presentation;assembly=DupFinder.Presentation"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance vm:MainViewModel}"
         Title="{x:Static res:Strings.WindowTitle}" Height="720" Width="1100" MinWidth="760" MinHeight="480"
@@ -104,7 +104,7 @@
                                                       ToolTip="{x:Static res:Strings.ShowInExplorerToolTip}">
                                                     <Grid.InputBindings>
                                                         <MouseBinding Gesture="LeftDoubleClick"
-                                                                      Command="{Binding DataContext.ShowInExplorerCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                      Command="{Binding DataContext.ShowInFileManagerCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                                       CommandParameter="{Binding}" />
                                                     </Grid.InputBindings>
                                                     <Grid.ColumnDefinitions>

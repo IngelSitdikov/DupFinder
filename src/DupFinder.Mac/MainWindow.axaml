@@ -1,0 +1,145 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:DupFinder.Presentation.ViewModels;assembly=DupFinder.Presentation"
+        xmlns:res="clr-namespace:DupFinder.Presentation;assembly=DupFinder.Presentation"
+        mc:Ignorable="d"
+        x:Class="DupFinder.Mac.MainWindow"
+        x:DataType="vm:MainViewModel"
+        x:CompileBindings="False"
+        Title="{x:Static res:Strings.WindowTitle}" Height="720" Width="1100" MinWidth="760" MinHeight="480"
+        FontSize="13">
+    <Window.Styles>
+        <Style Selector="Button">
+            <Setter Property="Padding" Value="12,4" />
+            <Setter Property="Margin" Value="0,0,6,0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="TabItem">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="MinHeight" Value="32" />
+            <Setter Property="Padding" Value="10,4" />
+        </Style>
+        <Style Selector="ListBox.groups ListBoxItem">
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+        <Style Selector="TextBlock.marked">
+            <Setter Property="Foreground" Value="#B03030" />
+            <Setter Property="TextDecorations" Value="Strikethrough" />
+        </Style>
+    </Window.Styles>
+
+    <Grid Margin="12" RowDefinitions="Auto,Auto,Auto,*,Auto">
+
+        <!-- Выбор дисков -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto" RowDefinitions="Auto,Auto">
+            <TextBlock Text="{x:Static res:Strings.DriveA}" VerticalAlignment="Center" Margin="0,0,8,6" FontWeight="SemiBold" />
+            <TextBox Grid.Column="1" Text="{Binding RootA}" Margin="0,0,6,6" IsEnabled="{Binding IsIdle}" />
+            <Button Grid.Column="2" Content="{x:Static res:Strings.Browse}" Command="{Binding BrowseACommand}" Margin="0,0,6,6" />
+
+            <TextBlock Grid.Row="1" Text="{x:Static res:Strings.DriveB}" VerticalAlignment="Center" Margin="0,0,8,0" FontWeight="SemiBold" />
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding RootB}" Margin="0,0,6,0"
+                     ToolTip.Tip="{x:Static res:Strings.DriveBToolTip}" IsEnabled="{Binding IsIdle}" />
+            <Button Grid.Row="1" Grid.Column="2" Content="{x:Static res:Strings.Browse}" Command="{Binding BrowseBCommand}" />
+            <Button Grid.Row="1" Grid.Column="3" Content="✕" ToolTip.Tip="{x:Static res:Strings.ClearBToolTip}"
+                    Command="{Binding ClearBCommand}" Margin="0" Padding="8,4" />
+        </Grid>
+
+        <!-- Параметры и запуск -->
+        <WrapPanel Grid.Row="1" Margin="0,10,0,0">
+            <CheckBox Content="{x:Static res:Strings.CrossOnly}" IsChecked="{Binding CrossOnly}"
+                      IsEnabled="{Binding HasRootB}" VerticalAlignment="Center" Margin="0,0,18,0" />
+            <TextBlock Text="{x:Static res:Strings.MinSizePrefix}" VerticalAlignment="Center" Margin="0,0,6,0" />
+            <TextBox Text="{Binding MinSizeKb}" Width="70" VerticalAlignment="Center" />
+            <TextBlock Text="{x:Static res:Strings.KB}" VerticalAlignment="Center" Margin="6,0,18,0" />
+            <Button Content="{x:Static res:Strings.FindDuplicates}" Command="{Binding ScanCommand}" FontWeight="SemiBold" />
+            <Button Content="{x:Static res:Strings.Stop}" Command="{Binding CancelCommand}" IsVisible="{Binding IsBusy}" />
+            <CheckBox Content="{x:Static res:Strings.HashCache}" IsChecked="{Binding UseCache}" VerticalAlignment="Center"
+                      Margin="18,0,8,0" ToolTip.Tip="{x:Static res:Strings.HashCacheToolTip}" />
+            <TextBlock Text="{Binding CacheInfo}" Opacity="0.65" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <Button Content="{x:Static res:Strings.Clear}" Command="{Binding ClearCacheCommand}" Margin="0" Padding="8,2" />
+            <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedLanguage}"
+                      IsEnabled="{Binding IsIdle}" ToolTip.Tip="{x:Static res:Strings.LanguageToolTip}"
+                      VerticalAlignment="Center" Margin="18,0,0,0" MinWidth="110" />
+        </WrapPanel>
+
+        <!-- Прогресс и итог -->
+        <StackPanel Grid.Row="2" Margin="0,10,0,6">
+            <ProgressBar Height="6" MinHeight="6" Value="{Binding ProgressPercent}" IsIndeterminate="{Binding ProgressIndeterminate}"
+                         IsVisible="{Binding IsBusy}" Margin="0,0,0,4" />
+            <TextBlock Text="{Binding Status}" TextTrimming="CharacterEllipsis" Opacity="0.75" />
+            <TextBlock Text="{Binding Summary}" FontWeight="SemiBold" Margin="0,4,0,0" />
+        </StackPanel>
+
+        <!-- Результаты -->
+        <TabControl Grid.Row="3" Padding="0,4,0,0">
+            <TabItem Header="{x:Static res:Strings.TabDuplicates}">
+                <ListBox Classes="groups" ItemsSource="{Binding Groups}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#40808080" BorderThickness="0,0,0,1" Padding="6,6">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Header}" FontWeight="SemiBold" Margin="0,0,0,4" />
+                                    <ItemsControl ItemsSource="{Binding Files}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,1" Background="Transparent" ColumnDefinitions="Auto,28,150,*"
+                                                      ToolTip.Tip="{x:Static res:Strings.ShowInFinderToolTip}"
+                                                      DoubleTapped="OnFileDoubleTapped">
+                                                    <CheckBox IsChecked="{Binding IsMarked}" VerticalAlignment="Center"
+                                                              ToolTip.Tip="{x:Static res:Strings.MarkToolTip}" Margin="0,0,6,0" />
+                                                    <Border Grid.Column="1" CornerRadius="3" Width="20" HorizontalAlignment="Left"
+                                                            VerticalAlignment="Center" Background="#E8EEF8">
+                                                        <TextBlock Text="{Binding RootLabel}" HorizontalAlignment="Center"
+                                                                   FontWeight="SemiBold" Foreground="#2B4C7E" />
+                                                    </Border>
+                                                    <TextBlock Grid.Column="2" Text="{Binding LastWrite, StringFormat={}{0:g}}"
+                                                               Opacity="0.65" VerticalAlignment="Center" />
+                                                    <TextBlock Grid.Column="3" Text="{Binding Path}" TextTrimming="CharacterEllipsis"
+                                                               VerticalAlignment="Center" Classes.marked="{Binding IsMarked}" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{x:Static res:Strings.TabErrors}" />
+                        <TextBlock Text="{Binding Errors.Count, StringFormat=' ({0})'}" />
+                    </StackPanel>
+                </TabItem.Header>
+                <ListBox ItemsSource="{Binding Errors}" />
+            </TabItem>
+        </TabControl>
+
+        <!-- Действия: слева — отметки, справа — что сделать с отмеченными; на узком окне переносятся -->
+        <Grid Grid.Row="4" Margin="0,10,0,0" ColumnDefinitions="*,Auto">
+            <WrapPanel VerticalAlignment="Center">
+                <TextBlock Text="{x:Static res:Strings.MarkLabel}" VerticalAlignment="Center" Margin="0,0,8,4" />
+                <Button Content="{x:Static res:Strings.KeepOldest}" Command="{Binding KeepOldestCommand}" Margin="0,0,6,4" />
+                <Button Content="{x:Static res:Strings.KeepOnA}" Command="{Binding KeepOnACommand}" Margin="0,0,6,4" />
+                <Button Content="{x:Static res:Strings.KeepOnB}" Command="{Binding KeepOnBCommand}" Margin="0,0,6,4" />
+                <Button Content="{x:Static res:Strings.UnmarkAll}" Command="{Binding ClearMarksCommand}" Margin="0,0,6,4" />
+            </WrapPanel>
+            <WrapPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <TextBlock Text="{Binding MarkedText}" VerticalAlignment="Center" Margin="0,0,12,4" />
+                <Button Content="{x:Static res:Strings.CsvReport}" Command="{Binding ExportCsvCommand}" Margin="0,0,6,4" />
+                <CheckBox Content="{x:Static res:Strings.VerifyBytes}" IsChecked="{Binding VerifyBeforeDelete}"
+                          VerticalAlignment="Center" Margin="6,0,12,4"
+                          ToolTip.Tip="{x:Static res:Strings.VerifyBytesToolTip}" />
+                <Button Content="{x:Static res:Strings.ReplaceWithLinks}" Command="{Binding HardLinkMarkedCommand}"
+                        ToolTip.Tip="{x:Static res:Strings.ReplaceWithLinksToolTipMac}" Margin="0,0,6,4" />
+                <Button Content="{x:Static res:Strings.MoveToTrash}" Command="{Binding DeleteMarkedCommand}"
+                        FontWeight="SemiBold" Margin="0,0,0,4" />
+            </WrapPanel>
+        </Grid>
+    </Grid>
+</Window>

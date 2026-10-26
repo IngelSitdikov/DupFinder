@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DupFinder.Core;
 
-namespace DupFinder.App.ViewModels;
+namespace DupFinder.Presentation.ViewModels;
 
 public sealed partial class FileItem(FileEntry entry, GroupItem group) : ObservableObject
 {

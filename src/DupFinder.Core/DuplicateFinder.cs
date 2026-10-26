@@ -161,7 +161,7 @@ public static class DuplicateFinder
         IReadOnlyList<FileEntry> files, Action<FileEntry> work, ConcurrentQueue<string> errors, CancellationToken ct)
     {
         var byVolume = files
-            .GroupBy(f => Path.GetPathRoot(f.Path) ?? "", StringComparer.OrdinalIgnoreCase)
+            .GroupBy(f => Volumes.RootOf(f.Path), StringComparer.OrdinalIgnoreCase)
             // Внутри тома — по пути: соседние файлы обычно лежат рядом и на диске.
             .Select(g => g.OrderBy(f => f.Path, StringComparer.OrdinalIgnoreCase).ToList())
             .ToList();

@@ -133,7 +133,7 @@ public sealed class CacheAndResolverTests : IDisposable
     [Fact]
     public void ReplaceWithHardLink_FreesSpaceAndKeepsContent()
     {
-        if (!OperatingSystem.IsWindows())
+        if (!OperatingSystem.IsWindows() && !OperatingSystem.IsMacOS())
             return;
         var content = Bytes(50_000, 1);
         var keep = Entry(Write("keep.bin", content));
@@ -151,7 +151,7 @@ public sealed class CacheAndResolverTests : IDisposable
     [Fact]
     public void ReplaceWithHardLink_LeavesTargetIntactWhenContentDiffers()
     {
-        if (!OperatingSystem.IsWindows())
+        if (!OperatingSystem.IsWindows() && !OperatingSystem.IsMacOS())
             return;
         var keep = Entry(Write("keep.bin", Bytes(5000, 1)));
         var targetContent = Bytes(5000, 2);

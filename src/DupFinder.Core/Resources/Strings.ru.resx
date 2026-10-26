@@ -11,6 +11,5 @@
   <data name="SameFile" xml:space="preserve"><value>это один и тот же файл</value></data>
   <data name="KeptCopyPrefix" xml:space="preserve"><value>оставляемая копия: </value></data>
   <data name="ContentMismatch" xml:space="preserve"><value>содержимое не совпадает с оставляемой копией</value></data>
-  <data name="HardLinksWindowsOnly" xml:space="preserve"><value>жёсткие ссылки поддерживаются только в Windows</value></data>
   <data name="HardLinkOtherVolume" xml:space="preserve"><value>оставляемая копия на другом диске — жёсткая ссылка возможна только в пределах одного тома</value></data>
 </root>

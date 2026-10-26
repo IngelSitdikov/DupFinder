@@ -1,4 +1,4 @@
-namespace DupFinder.App;
+namespace DupFinder.Presentation;
 
 public static class Format
 {

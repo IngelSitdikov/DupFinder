@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key>
+    <string>DupFinder</string>
+    <key>CFBundleDisplayName</key>
+    <string>DupFinder</string>
+    <key>CFBundleIdentifier</key>
+    <string>io.github.ingelsitdikov.dupfinder</string>
+    <key>CFBundleExecutable</key>
+    <string>DupFinder</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleVersion</key>
+    <string>1.0</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>en</string>
+    <key>CFBundleLocalizations</key>
+    <array>
+        <string>en</string>
+        <string>ru</string>
+    </array>
+    <key>LSMinimumSystemVersion</key>
+    <string>13.0</string>
+    <key>NSHighResolutionCapable</key>
+    <true/>
+    <!-- Тексты запросов доступа: macOS спрашивает разрешение при первом обходе этих папок и томов. -->
+    <key>NSDesktopFolderUsageDescription</key>
+    <string>DupFinder looks for duplicate files in the folders you choose.</string>
+    <key>NSDocumentsFolderUsageDescription</key>
+    <string>DupFinder looks for duplicate files in the folders you choose.</string>
+    <key>NSDownloadsFolderUsageDescription</key>
+    <string>DupFinder looks for duplicate files in the folders you choose.</string>
+    <key>NSRemovableVolumesUsageDescription</key>
+    <string>DupFinder looks for duplicate files on the drives you choose.</string>
+    <key>NSNetworkVolumesUsageDescription</key>
+    <string>DupFinder looks for duplicate files on the drives you choose.</string>
+</dict>
+</plist>

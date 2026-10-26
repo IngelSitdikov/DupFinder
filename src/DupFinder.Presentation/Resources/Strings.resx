@@ -94,4 +94,13 @@ Each file is compared byte by byte with the kept copy before deletion.</value></
   <data name="RestartForLanguage" xml:space="preserve"><value>The interface language will change after a restart. Restart now?</value></data>
   <data name="RestoredScan" xml:space="preserve"><value>Results of the search from {0:g}. Files may have changed since then: each one is checked against the disk before any action. To refresh, search again.</value></data>
   <data name="SnapshotSaveFailed" xml:space="preserve"><value>Could not save the results for the next launch: {0}</value></data>
+  <data name="MoveToTrash" xml:space="preserve"><value>Move to Trash</value></data>
+  <data name="ConfirmTrash" xml:space="preserve"><value>Move {0} to the Trash?</value></data>
+  <data name="DoneTrashed" xml:space="preserve"><value>Moved to Trash: {0:N0}</value></data>
+  <data name="ShowInFinderToolTip" xml:space="preserve"><value>Double-click to show in Finder</value></data>
+  <data name="ReplaceWithLinksToolTipMac" xml:space="preserve"><value>Marked files stay where they are but become hard links to the kept copy and stop taking up space. Only within one volume.</value></data>
+  <data name="TrashUnsupported" xml:space="preserve"><value>the Trash is not available on this system</value></data>
+  <data name="ButtonYes" xml:space="preserve"><value>Yes</value></data>
+  <data name="ButtonNo" xml:space="preserve"><value>No</value></data>
+  <data name="ButtonCancel" xml:space="preserve"><value>Cancel</value></data>
 </root>

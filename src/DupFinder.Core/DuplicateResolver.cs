@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.Runtime.InteropServices;
 using DupFinder.Core.Resources;
 
@@ -68,18 +67,15 @@ public static partial class DuplicateResolver
         return CheckUnchanged(target) ?? CheckUnchanged(keep)?.Insert(0, Strings.KeptCopyPrefix);
     }
 
-    public static bool SameVolume(string a, string b) =>
-        string.Equals(Path.GetPathRoot(a), Path.GetPathRoot(b), StringComparison.OrdinalIgnoreCase);
+    public static bool SameVolume(string a, string b) => Volumes.Same(a, b);
 
     /// <summary>
-    /// Заменяет <paramref name="target"/> жёсткой ссылкой на <paramref name="keep"/> (только NTFS, один том).
+    /// Заменяет <paramref name="target"/> жёсткой ссылкой на <paramref name="keep"/> (NTFS, APFS и т. п.; один том).
     /// Сначала ссылка создаётся под временным именем, потом атомарно встаёт на место файла —
     /// при сбое на любом шаге исходный файл остаётся нетронутым. Возвращает текст ошибки или null.
     /// </summary>
     public static string? ReplaceWithHardLink(FileEntry target, FileEntry keep, CancellationToken ct = default)
     {
-        if (!OperatingSystem.IsWindows())
-            return Strings.HardLinksWindowsOnly;
         if (!SameVolume(target.Path, keep.Path))
             return Strings.HardLinkOtherVolume;
 
@@ -92,8 +88,11 @@ public static partial class DuplicateResolver
                 return null; // уже ссылка на тот же файл
 
             var temp = $"{target.Path}.{Guid.NewGuid():N}.dflink";
-            if (!CreateHardLink(LongPath(temp), LongPath(keep.Path), IntPtr.Zero))
-                return new Win32Exception(Marshal.GetLastPInvokeError()).Message;
+            var linked = OperatingSystem.IsWindows()
+                ? CreateHardLink(LongPath(temp), LongPath(keep.Path), IntPtr.Zero)
+                : Link(keep.Path, temp) == 0;
+            if (!linked)
+                return Marshal.GetPInvokeErrorMessage(Marshal.GetLastPInvokeError());
             try
             {
                 File.Move(temp, target.Path, overwrite: true);
@@ -124,4 +123,8 @@ public static partial class DuplicateResolver
         SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool CreateHardLink(string newFile, string existingFile, IntPtr securityAttributes);
+
+    /// <summary>POSIX link(существующий, новый) — порядок аргументов обратный CreateHardLink.</summary>
+    [LibraryImport("libc", EntryPoint = "link", StringMarshalling = StringMarshalling.Utf8, SetLastError = true)]
+    private static partial int Link(string existingFile, string newFile);
 }

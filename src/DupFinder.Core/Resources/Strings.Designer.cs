@@ -103,15 +103,6 @@ namespace DupFinder.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to hard links are supported only on Windows.
-        /// </summary>
-        internal static string HardLinksWindowsOnly {
-            get {
-                return ResourceManager.GetString("HardLinksWindowsOnly", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to kept copy: .
         /// </summary>
         internal static string KeptCopyPrefix {

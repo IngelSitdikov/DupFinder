@@ -94,4 +94,13 @@
   <data name="RestartForLanguage" xml:space="preserve"><value>Язык интерфейса сменится после перезапуска. Перезапустить сейчас?</value></data>
   <data name="RestoredScan" xml:space="preserve"><value>Результаты поиска от {0:g}. С тех пор файлы могли измениться: перед любым действием каждый сверяется с диском. Чтобы обновить — найдите заново.</value></data>
   <data name="SnapshotSaveFailed" xml:space="preserve"><value>Не удалось сохранить результаты до следующего запуска: {0}</value></data>
+  <data name="MoveToTrash" xml:space="preserve"><value>Переместить в Корзину</value></data>
+  <data name="ConfirmTrash" xml:space="preserve"><value>Переместить в Корзину {0}?</value></data>
+  <data name="DoneTrashed" xml:space="preserve"><value>Перемещено в Корзину: {0:N0}</value></data>
+  <data name="ShowInFinderToolTip" xml:space="preserve"><value>Двойной щелчок — показать в Finder</value></data>
+  <data name="ReplaceWithLinksToolTipMac" xml:space="preserve"><value>Отмеченные файлы останутся на месте, но станут жёсткими ссылками на оставляемую копию и перестанут занимать место. Только в пределах одного тома.</value></data>
+  <data name="TrashUnsupported" xml:space="preserve"><value>корзина в этой системе недоступна</value></data>
+  <data name="ButtonYes" xml:space="preserve"><value>Да</value></data>
+  <data name="ButtonNo" xml:space="preserve"><value>Нет</value></data>
+  <data name="ButtonCancel" xml:space="preserve"><value>Отмена</value></data>
 </root>

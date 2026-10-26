@@ -1,11 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\DupFinder.Core\DupFinder.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <ProjectReference Include="..\DupFinder.Presentation\DupFinder.Presentation.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -14,36 +10,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <!-- Нейтральные ресурсы — английские; русский перевод в Resources/*.ru.resx. -->
-    <NeutralLanguage>en</NeutralLanguage>
     <SatelliteResourceLanguages>ru</SatelliteResourceLanguages>
   </PropertyGroup>
-
-  <ItemGroup>
-    <!-- Класс доступа к строкам перегенерируется при сборке, когда меняется Strings.resx, и лежит рядом
-         с ним в репозитории: разметку WPF компилирует во временном проекте, куда попадают только файлы,
-         существующие до сборки. -->
-    <EmbeddedResource Update="Resources\Strings.resx">
-      <StronglyTypedFileName>Resources\Strings.Designer.cs</StronglyTypedFileName>
-      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
-      <StronglyTypedNamespace>DupFinder.App</StronglyTypedNamespace>
-      <!-- Имя ресурса внутри сборки идёт от папки (Resources), а не от пространства имён класса. -->
-      <StronglyTypedManifestPrefix>DupFinder.App.Resources</StronglyTypedManifestPrefix>
-      <StronglyTypedClassName>Strings</StronglyTypedClassName>
-      <PublicClass>true</PublicClass>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <!-- Strings.Designer.cs уже в Compile по шаблону **/*.cs, а генератор ресурсов добавляет его второй раз
-       (CS2002). Оставляем одну запись. -->
-  <Target Name="DedupeStringsDesigner" AfterTargets="CoreResGen">
-    <ItemGroup>
-      <Compile Remove="Resources\Strings.Designer.cs" />
-      <Compile Include="Resources\Strings.Designer.cs" />
-    </ItemGroup>
-  </Target>
 
 </Project>

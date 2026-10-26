@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Окно для macOS на Avalonia. Логика общая с WPF-версией — в DupFinder.Presentation.
+       Сборка .app: dotnet run tools/publish-mac.cs -->
+
+  <ItemGroup>
+    <ProjectReference Include="..\DupFinder.Presentation\DupFinder.Presentation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.3.22" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.22" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.22" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>DupFinder</AssemblyName>
+    <RootNamespace>DupFinder.Mac</RootNamespace>
+    <SatelliteResourceLanguages>ru</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+</Project>

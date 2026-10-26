@@ -1,19 +1,17 @@
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DupFinder.App.Services;
+using DupFinder.Presentation.Services;
 using DupFinder.Core;
-using Microsoft.Win32;
 
-namespace DupFinder.App.ViewModels;
+namespace DupFinder.Presentation.ViewModels;
 
 public sealed partial class MainViewModel : ObservableObject, IDisposable
 {
+    private readonly IUserDialogs _dialogs;
     private CancellationTokenSource? _cts;
     private SqliteHashCache? _cache;
 
@@ -71,8 +69,9 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
     /// <summary>Корни, по которым получен показанный список (поля A/B могли с тех пор поменять).</summary>
     private IReadOnlyList<string> _resultRoots = [];
 
-    public MainViewModel()
+    public MainViewModel(IUserDialogs dialogs)
     {
+        _dialogs = dialogs;
         _selectedLanguage = Languages.First(l => l.Code == UiLanguage.Current);
         var settings = AppSettings.Load();
         RootA = settings.RootA ?? "";
@@ -92,18 +91,17 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
     /// Выбор сохраняется сразу, а применяется при запуске: строки в XAML не обновляются на лету.
     /// Вопрос о перезапуске задаётся уже на выбранном языке.
     /// </summary>
-    partial void OnSelectedLanguageChanged(LanguageOption value)
+    partial void OnSelectedLanguageChanged(LanguageOption value) => _ = OfferRestartAsync(value);
+
+    private async Task OfferRestartAsync(LanguageOption value)
     {
         AppSettings.Update(s => s.Language = value.Code);
         if (value.Code == UiLanguage.Current)
             return;
         var question = Strings.ResourceManager.GetString(nameof(Strings.RestartForLanguage),
             CultureInfo.GetCultureInfo(value.Code)) ?? Strings.RestartForLanguage;
-        if (MessageBox.Show(question, Strings.WindowTitle, MessageBoxButton.YesNo, MessageBoxImage.Question)
-            != MessageBoxResult.Yes)
-            return;
-        Process.Start(new ProcessStartInfo(Environment.ProcessPath!) { UseShellExecute = true });
-        Application.Current.Shutdown();
+        if (await _dialogs.ShowAsync(question, Strings.WindowTitle, DialogKind.YesNo))
+            _dialogs.Restart();
     }
 
     public ObservableCollection<GroupItem> Groups { get; } = [];
@@ -117,21 +115,16 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
         : string.Format(Strings.Marked, Format.Count(_markedCount, Strings.FileForms), Format.Bytes(MarkedBytes));
 
     [RelayCommand]
-    private void BrowseA() => RootA = PickFolder(RootA) ?? RootA;
+    private async Task BrowseAAsync() => RootA = await PickFolderAsync(RootA) ?? RootA;
 
     [RelayCommand]
-    private void BrowseB() => RootB = PickFolder(RootB) ?? RootB;
+    private async Task BrowseBAsync() => RootB = await PickFolderAsync(RootB) ?? RootB;
 
     [RelayCommand]
     private void ClearB() => RootB = "";
 
-    private static string? PickFolder(string current)
-    {
-        var dialog = new OpenFolderDialog { Title = Strings.PickFolderTitle };
-        if (Directory.Exists(current))
-            dialog.InitialDirectory = current;
-        return dialog.ShowDialog() == true ? dialog.FolderName : null;
-    }
+    private Task<string?> PickFolderAsync(string current) =>
+        _dialogs.PickFolderAsync(Strings.PickFolderTitle, Directory.Exists(current) ? current : null);
 
     // --- Кэш ---
 
@@ -391,10 +384,10 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
         var fullyMarked = Groups.Where(g => g.Files.All(f => f.IsMarked)).ToList();
         if (fullyMarked.Count > 0)
         {
-            MessageBox.Show(
+            await _dialogs.ShowAsync(
                 string.Format(Strings.AllMarked, Format.Count(fullyMarked.Count, Strings.GroupInForms),
                     fullyMarked[0].Files[0].Path),
-                Strings.DialogTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+                Strings.DialogTitle, DialogKind.Warning);
             return;
         }
 
@@ -406,7 +399,7 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
         var noPair = plan.Where(p => p.Keep is null).Select(p => p.File).ToList();
         var work = plan.Where(p => p.Keep is not null).Select(p => (p.File, Keep: p.Keep!)).ToList();
 
-        if (!Confirm(hardLink, work, noPair))
+        if (!await ConfirmAsync(hardLink, work, noPair))
             return;
 
         var progress = new Progress<(int Done, string Path)>(p =>
@@ -430,7 +423,7 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
                 {
                     var error = hardLink
                         ? DuplicateResolver.ReplaceWithHardLink(file.Entry, keep.Entry, ct)
-                        : FileActions.MoveToRecycleBin(file.Entry, keep.Entry, verify, ct);
+                        : FileActions.MoveToTrash(file.Entry, keep.Entry, verify, ct);
                     results.Add((file, error));
                 }
                 catch (OperationCanceledException)
@@ -459,18 +452,19 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
         var ok = results.Count(r => r.Error is null);
         var failed = results.Count - ok + noPair.Count;
         var notDone = work.Count - results.Count;
-        Status = string.Format(hardLink ? Strings.DoneLinked : Strings.DoneDeleted, ok)
+        Status = string.Format(hardLink ? Strings.DoneLinked
+                     : OperatingSystem.IsMacOS() ? Strings.DoneTrashed : Strings.DoneDeleted, ok)
                  + (failed == 0 ? "." : string.Format(Strings.DoneFailedTail, failed))
                  + (notDone > 0 ? string.Format(Strings.NotProcessedTail, notDone) : "");
     }
 
-    private bool Confirm(bool hardLink, List<(FileItem File, FileItem Keep)> work, List<FileItem> noPair)
+    private async Task<bool> ConfirmAsync(bool hardLink, List<(FileItem File, FileItem Keep)> work, List<FileItem> noPair)
     {
         if (work.Count == 0)
         {
-            MessageBox.Show(
+            await _dialogs.ShowAsync(
                 hardLink ? Strings.NoSameVolumeCopies : Strings.NothingToProcess,
-                Strings.DialogTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+                Strings.DialogTitle, DialogKind.Info);
             return false;
         }
 
@@ -483,7 +477,7 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
         }
         else
         {
-            text.AppendFormat(Strings.ConfirmDelete, count);
+            text.AppendFormat(OperatingSystem.IsMacOS() ? Strings.ConfirmTrash : Strings.ConfirmDelete, count);
             if (VerifyBeforeDelete)
                 text.Append(Strings.ConfirmDeleteVerify);
             var removable = work.Count(w => FileActions.IsOnRemovableDrive(w.File.Path));
@@ -493,27 +487,22 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
         if (noPair.Count > 0)
             text.AppendFormat(Strings.ConfirmSkipped, noPair.Count);
 
-        return MessageBox.Show(text.ToString(), Strings.DialogTitle, MessageBoxButton.OKCancel, MessageBoxImage.Question)
-               == MessageBoxResult.OK;
+        return await _dialogs.ShowAsync(text.ToString(), Strings.DialogTitle, DialogKind.OkCancel);
     }
 
     [RelayCommand]
-    private static void ShowInExplorer(FileItem? file)
+    private static void ShowInFileManager(FileItem? file)
     {
         if (file is not null)
-            FileActions.ShowInExplorer(file.Path);
+            FileActions.ShowInFileManager(file.Path);
     }
 
     [RelayCommand]
-    private void ExportCsv()
+    private async Task ExportCsvAsync()
     {
-        var dialog = new SaveFileDialog
-        {
-            Title = Strings.SaveReportTitle,
-            Filter = Strings.CsvFilter,
-            FileName = string.Format(Strings.ReportFileName, DateTime.Now),
-        };
-        if (dialog.ShowDialog() != true)
+        var fileName = await _dialogs.PickCsvFileAsync(Strings.SaveReportTitle,
+            string.Format(Strings.ReportFileName, DateTime.Now));
+        if (fileName is null)
             return;
 
         // Разделитель — как в региональных настройках: его же ждёт Excel («;» в России, «,» в США).
@@ -528,8 +517,8 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
                     $"\"{f.Path.Replace("\"", "\"\"")}\"").Append("\r\n");
         }
         // UTF-8 с BOM — чтобы Excel открыл кириллицу без вопросов.
-        File.WriteAllText(dialog.FileName, sb.ToString(), new UTF8Encoding(encoderShouldEmitUTF8Identifier: true));
-        Status = string.Format(Strings.ReportSaved, dialog.FileName);
+        File.WriteAllText(fileName, sb.ToString(), new UTF8Encoding(encoderShouldEmitUTF8Identifier: true));
+        Status = string.Format(Strings.ReportSaved, fileName);
     }
 
     public void Dispose()

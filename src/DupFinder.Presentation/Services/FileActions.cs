@@ -3,7 +3,7 @@ using System.IO;
 using DupFinder.Core;
 using Microsoft.VisualBasic.FileIO;
 
-namespace DupFinder.App.Services;
+namespace DupFinder.Presentation.Services;
 
 public static class FileActions
 {
@@ -12,7 +12,7 @@ public static class FileActions
     /// с момента сканирования, а при <paramref name="verify"/> — ещё и что они совпадают побайтно.
     /// Возвращает текст ошибки или null при успехе.
     /// </summary>
-    public static string? MoveToRecycleBin(FileEntry target, FileEntry keep, bool verify, CancellationToken ct)
+    public static string? MoveToTrash(FileEntry target, FileEntry keep, bool verify, CancellationToken ct)
     {
         try
         {
@@ -22,8 +22,14 @@ public static class FileActions
             if (reason is not null)
                 return reason;
 
-            FileSystem.DeleteFile(target.Path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
-            return null;
+            if (OperatingSystem.IsWindows())
+            {
+                FileSystem.DeleteFile(target.Path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                return null;
+            }
+            if (OperatingSystem.IsMacOS())
+                return MacTrash.Move(target.Path);
+            return Strings.TrashUnsupported;
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException
                                        || (ex is OperationCanceledException && !ct.IsCancellationRequested))
@@ -32,9 +38,14 @@ public static class FileActions
         }
     }
 
-    /// <summary>На съёмных носителях корзины нет — файл будет удалён насовсем.</summary>
+    /// <summary>
+    /// На съёмных носителях в Windows корзины нет — файл будет удалён насовсем.
+    /// В macOS у внешних томов своя корзина (.Trashes), так что там это не страшно.
+    /// </summary>
     public static bool IsOnRemovableDrive(string path)
     {
+        if (!OperatingSystem.IsWindows())
+            return false;
         try
         {
             var root = System.IO.Path.GetPathRoot(path);
@@ -46,6 +57,14 @@ public static class FileActions
         }
     }
 
-    public static void ShowInExplorer(string path) =>
-        Process.Start(new ProcessStartInfo("explorer.exe", $"/select,\"{path}\"") { UseShellExecute = true });
+    /// <summary>Открыть папку с файлом и выделить его: Проводник в Windows, Finder в macOS.</summary>
+    public static void ShowInFileManager(string path)
+    {
+        if (OperatingSystem.IsWindows())
+            Process.Start(new ProcessStartInfo("explorer.exe", $"/select,\"{path}\"") { UseShellExecute = true });
+        else if (OperatingSystem.IsMacOS())
+            Process.Start("open", ["-R", path]);
+        else
+            Process.Start("xdg-open", [System.IO.Path.GetDirectoryName(path) ?? path]);
+    }
 }
